@@ -1,0 +1,3 @@
+rootProject.name='VideoRecruitment'
+include ':app'
+include ':videorecruitment'

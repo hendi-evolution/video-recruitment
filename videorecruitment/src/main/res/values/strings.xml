@@ -1,0 +1,10 @@
+<resources>
+
+    <string name="title_activity_video_recording">VideoRecordingActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+
+    <string name="press_record_button">Press record button when you ready</string>
+    <string name="thirty_seconds">30 seconds video</string>
+
+</resources>
