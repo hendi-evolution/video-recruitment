@@ -1,9 +1,11 @@
-package com.greatdayhr.videorecruitment
+package com.greatdayhr.videorecruitment_app
 
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.greatdayhr.videorecruitment.VideoRecruitmentPlugin
+import com.greatdayhr.videorecruitment.VideoRecruitmentPluginListener
 import kotlinx.android.synthetic.main.activity_main.*
 import org.json.JSONArray
 

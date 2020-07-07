@@ -1,4 +1,4 @@
-package com.greatdayhr.videorecruitment;
+package com.greatdayhr.videorecruitment_app;
 
 import android.content.Context;
 

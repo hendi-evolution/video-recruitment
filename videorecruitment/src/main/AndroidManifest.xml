@@ -6,14 +6,14 @@
 
     <application>
         <activity
-            android:name=".VideoRecordingActivity"
+            android:name="com.greatdayhr.videorecruitment.VideoRecordingActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_video_recording"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"></activity>
 
         <activity
-            android:name=".VideoPreviewActivity"
+            android:name="com.greatdayhr.videorecruitment.VideoPreviewActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"></activity>
