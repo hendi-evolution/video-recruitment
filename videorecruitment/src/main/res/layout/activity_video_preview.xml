@@ -55,7 +55,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:backgroundTint="@android:color/holo_blue_dark"
-            android:text="Next Question"
+            android:text="@string/next_question"
             android:textColor="@android:color/white" />
     </LinearLayout>
 

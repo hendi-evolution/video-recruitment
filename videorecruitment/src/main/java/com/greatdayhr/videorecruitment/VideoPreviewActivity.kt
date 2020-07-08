@@ -77,9 +77,9 @@ class VideoPreviewActivity : AppCompatActivity() {
 
     private fun initRetakeView() {
         if (currentQuestion == questions?.length()!! - 1) {
-            btn_next_question.text = "Done"
+            btn_next_question.text = getString(R.string.done)
         } else {
-            btn_next_question.text = "Next Question"
+            btn_next_question.text = getString(R.string.next_question)
         }
     }
 

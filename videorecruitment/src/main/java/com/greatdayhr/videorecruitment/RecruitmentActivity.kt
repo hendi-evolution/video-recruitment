@@ -60,6 +60,24 @@ class RecruitmentActivity : AppCompatActivity() {
         startActivityForResult(intent, REQUEST_PREVIEW_VIDEO)
     }
 
+    fun onTextAnswered(answer: String) {
+        questions?.getJSONObject(currentQuestion)?.putOpt("answer", answer)
+
+        currentQuestion++
+        if (currentQuestion >= questions?.length()!!) {
+            val results = questions?.toString()
+            val intentResult = Intent().apply {
+                putExtra("result", results)
+            }
+            setResult(Activity.RESULT_OK, intentResult)
+            finish()
+        } else {
+            questions?.getJSONObject(currentQuestion)?.let {
+                setFragment(it)
+            }
+        }
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == REQUEST_PREVIEW_VIDEO) {
             if (resultCode == Activity.RESULT_OK) {
