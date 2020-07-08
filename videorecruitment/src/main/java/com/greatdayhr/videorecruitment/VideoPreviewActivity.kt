@@ -7,11 +7,10 @@ import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_video_preview.*
-import kotlinx.android.synthetic.main.activity_video_recording.btn_close
 import org.json.JSONArray
 import org.json.JSONException
 
-class VideoPreviewActivity() : AppCompatActivity() {
+class VideoPreviewActivity : AppCompatActivity() {
     private var videoPath: String? = null
     private var questions: JSONArray? = null
     private var currentQuestion: Int = 0

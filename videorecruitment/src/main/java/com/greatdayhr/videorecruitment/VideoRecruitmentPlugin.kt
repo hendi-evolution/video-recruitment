@@ -11,8 +11,14 @@ class VideoRecruitmentPlugin(private val listener: VideoRecruitmentPluginListene
         const val REQUEST = 6573
     }
 
+//    fun getIntent(activity: Activity, questionsData: String): Intent {
+//        return Intent(activity, VideoRecordingActivity::class.java).apply {
+//            putExtra("q", questionsData)
+//        }
+//    }
+
     fun getIntent(activity: Activity, questionsData: String): Intent {
-        return Intent(activity, VideoRecordingActivity::class.java).apply {
+        return Intent(activity, RecruitmentActivity::class.java).apply {
             putExtra("q", questionsData)
         }
     }
