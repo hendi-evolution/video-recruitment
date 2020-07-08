@@ -17,7 +17,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main);
 
-        val questions = "[{\"id\":1,\"q\":\"Question number 1\",\"video_path\":\"\"},{\"id\":2,\"q\":\"Question number 2\",\"video_path\":\"\"}]"
+        val questions = "[{\"id\":1,\"q\":\"Question number 1\",\"video_path\":\"\",\"type\":2},{\"id\":1,\"q\":\"Question number 2\",\"video_path\":\"\",\"type\":1},{\"id\":2,\"q\":\"Question number 3\",\"video_path\":\"\",\"type\":2}]"
+//        val questions = "[{\"id\":1,\"q\":\"Question number 1\",\"video_path\":\"\",\"type\":1},{\"id\":1,\"q\":\"Question number 1\",\"video_path\":\"\",\"type\":1}]"
 
         videoRecruitmentPlugin = VideoRecruitmentPlugin(object : VideoRecruitmentPluginListener {
             override fun onComplete(data: JSONArray) {

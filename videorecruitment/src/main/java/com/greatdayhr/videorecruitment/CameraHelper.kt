@@ -1,7 +1,7 @@
 package com.greatdayhr.videorecruitment
 
 import android.os.CountDownTimer
-import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
@@ -11,7 +11,7 @@ import com.otaliastudios.cameraview.CameraView
 import com.otaliastudios.cameraview.VideoResult
 import java.io.File
 
-class CameraHelper(private val cameraView: CameraView, private val activity: AppCompatActivity, private val listener: CameraHelperListener) : CameraListener(), LifecycleObserver {
+class CameraHelper(private val cameraView: CameraView, private val fragment: Fragment, private val listener: CameraHelperListener) : CameraListener(), LifecycleObserver {
 
     private val videoDuration: Long = 30 * 1000
     private val preRecordDuration: Long = 1000
@@ -21,10 +21,10 @@ class CameraHelper(private val cameraView: CameraView, private val activity: App
 
     init {
         CameraLogger.setLogLevel(CameraLogger.LEVEL_VERBOSE)
-        cameraView.setLifecycleOwner(activity)
+        cameraView.setLifecycleOwner(fragment)
         cameraView.addCameraListener(this)
 
-        mLifecycle = activity.lifecycle
+        mLifecycle = fragment.lifecycle
         mLifecycle.addObserver(this)
     }
 
@@ -38,7 +38,7 @@ class CameraHelper(private val cameraView: CameraView, private val activity: App
             return
         }
         //cameraView.takeVideo(File(activity.filesDir, fileName), videoDuration.toInt())
-        cameraView.takeVideoSnapshot(File(activity.filesDir, fileName), videoDuration.toInt())
+        cameraView.takeVideoSnapshot(File(fragment.context?.cacheDir, fileName), videoDuration.toInt())
     }
 
     fun formatTime(time: Long): String {
