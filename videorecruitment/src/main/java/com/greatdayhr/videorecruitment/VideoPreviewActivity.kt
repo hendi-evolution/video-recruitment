@@ -111,7 +111,12 @@ class VideoPreviewActivity : AppCompatActivity() {
     }
 
     private fun setQuestionView() {
-        findViewById<TextView>(R.id.tv_question_number).text = "${currentQuestion + 1} of ${questions?.length()} Question(s)"
-        findViewById<TextView>(R.id.tv_question).text = questions?.optJSONObject(currentQuestion)?.optString("q")
+        val currentQuestionLabel = "${currentQuestion + 1} of ${questions?.length()} Question(s)"
+        val questionLabel = questions?.optJSONObject(currentQuestion)?.optString("q")
+        val durationLabel = questions?.optJSONObject(currentQuestion)?.optString("videoDuration")
+
+        findViewById<TextView>(R.id.tv_question_number).text = currentQuestionLabel
+        findViewById<TextView>(R.id.tv_question).text = questionLabel
+        findViewById<TextView>(R.id.tv_video_duration_label).text = "$durationLabel minutes video"
     }
 }

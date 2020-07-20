@@ -54,7 +54,17 @@ class VideoRecordingFragment : Fragment() {
                 tv_record_remaining.text = "${cameraHelper.formatTime(tickTime)} Remaining"
             }
         }
-        cameraHelper = CameraHelper(camera, this, cameraHelperListener)
+
+        val duration = parent().questions?.optJSONObject(parent().currentQuestion)?.optString("videoDuration")
+        duration?.let {
+            val durationMillis = it.toLong() * 60 * 1000
+            cameraHelper = CameraHelper.Builder()
+                    .setCameraView(camera)
+                    .setFragment(this)
+                    .setDuration(durationMillis)
+                    .setListener(cameraHelperListener)
+                    .build()
+        }
     }
 
     private fun initButtonListener() {
@@ -63,7 +73,7 @@ class VideoRecordingFragment : Fragment() {
         }
 
         btn_switch_camera.setOnClickListener {
-            this.cameraHelper.getCamera().toggleFacing()
+            this.cameraHelper.getCamera()?.toggleFacing()
         }
 
         btn_record.setOnClickListener {
@@ -73,8 +83,13 @@ class VideoRecordingFragment : Fragment() {
 
     private fun setQuestionView() {
         view?.let {
-            it.findViewById<TextView>(R.id.tv_question_number).text = "${parent().currentQuestion + 1} of ${parent().questions?.length()} Question(s)"
-            it.findViewById<TextView>(R.id.tv_question).text = parent().questions?.optJSONObject(parent().currentQuestion)?.optString("q")
+            val currentQuestionLabel = "${parent().currentQuestion + 1} of ${parent().questions?.length()} Question(s)"
+            val questionLabel = parent().questions?.optJSONObject(parent().currentQuestion)?.optString("q")
+            val durationLabel = parent().questions?.optJSONObject(parent().currentQuestion)?.optString("videoDuration")
+
+            it.findViewById<TextView>(R.id.tv_question_number).text = currentQuestionLabel
+            it.findViewById<TextView>(R.id.tv_question).text = questionLabel
+            it.findViewById<TextView>(R.id.tv_video_duration_label).text = "$durationLabel minutes video"
         }
     }
 }

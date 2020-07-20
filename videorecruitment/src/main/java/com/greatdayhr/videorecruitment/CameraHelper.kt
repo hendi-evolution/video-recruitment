@@ -11,71 +11,106 @@ import com.otaliastudios.cameraview.CameraView
 import com.otaliastudios.cameraview.VideoResult
 import java.io.File
 
-class CameraHelper(private val cameraView: CameraView, private val fragment: Fragment, private val listener: CameraHelperListener) : CameraListener(), LifecycleObserver {
+class CameraHelper private constructor(
+        private val cameraView: CameraView?,
+        private val fragment: Fragment?,
+        private val duration: Long?,
+        private val listener: CameraHelperListener?
+) : CameraListener(), LifecycleObserver {
 
-    private val videoDuration: Long = 30 * 1000
-    private val preRecordDuration: Long = 1000
-    private var mLifecycle: Lifecycle
-    private var isClosed = false;
+    private var mLifecycle: Lifecycle? = null
     private var recordTimer: CountDownTimer? = null
 
-    init {
-        CameraLogger.setLogLevel(CameraLogger.LEVEL_VERBOSE)
-        cameraView.setLifecycleOwner(fragment)
-        cameraView.addCameraListener(this)
-
-        mLifecycle = fragment.lifecycle
-        mLifecycle.addObserver(this)
+    class Builder(
+            private var cameraView: CameraView? = null,
+            private var fragment: Fragment? = null,
+            private var duration: Long? = null,
+            private var listener: CameraHelperListener? = null
+    ) {
+        fun setCameraView(cameraView: CameraView) = apply { this.cameraView = cameraView }
+        fun setFragment(fragment: Fragment) = apply { this.fragment = fragment }
+        fun setDuration(duration: Long) = apply { this.duration = duration }
+        fun setListener(listener: CameraHelperListener) = apply { this.listener = listener }
+        fun build() = CameraHelper(cameraView, fragment, duration, listener)
     }
 
-    fun getCamera(): CameraView {
+    init {
+        if (cameraView == null) {
+            throw NullPointerException("Please set camera view");
+        }
+        if (fragment == null) {
+            throw NullPointerException("Please set fragment");
+        }
+        if (duration == null) {
+            throw NullPointerException("Please set duration");
+        }
+
+        CameraLogger.setLogLevel(CameraLogger.LEVEL_VERBOSE)
+        cameraView?.setLifecycleOwner(fragment!!)
+        cameraView?.addCameraListener(this)
+        cameraView?.videoMaxDuration = duration?.toInt()!!
+
+        mLifecycle = fragment?.lifecycle
+        mLifecycle?.addObserver(this)
+    }
+
+    fun getCamera(): CameraView? {
         return cameraView;
     }
 
     fun record(fileName: String) {
-        if (cameraView.isTakingVideo) {
-            cameraView.stopVideo()
+        if (cameraView?.isTakingVideo!!) {
+            cameraView?.stopVideo()
             return
         }
-        //cameraView.takeVideo(File(activity.filesDir, fileName), videoDuration.toInt())
-        cameraView.takeVideoSnapshot(File(fragment.context?.cacheDir, fileName), videoDuration.toInt())
+        cameraView.takeVideoSnapshot(File(fragment?.context?.cacheDir, fileName), duration?.toInt()!!)
     }
 
-    fun formatTime(time: Long): String {
-        if (time > 9) {
-            return "00:$time"
+    fun formatTime(timeSecond: Long): String {
+        val minutes = timeSecond / 60
+        val seconds = timeSecond % 60
+
+        val strMinutes = if (minutes < 10) {
+            "0$minutes"
+        } else {
+            "$minutes"
         }
-        return "00:0$time"
+
+        val strSeconds = if (seconds < 10) {
+            "0$seconds"
+        } else {
+            "$seconds"
+        }
+
+        return "$strMinutes:$strSeconds"
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
     fun onPause() {
-        isClosed = true
         recordTimer?.cancel()
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
     fun onDestroy() {
-        isClosed = true
         recordTimer?.cancel()
     }
 
     // MARK: CameraListener Implementation
     override fun onVideoTaken(result: VideoResult) {
-        listener.onVideoTaken(result)
+        listener?.onVideoTaken(result)
     }
 
     override fun onVideoRecordingStart() {
-        listener.onRecordingStart()
+        listener?.onRecordingStart()
         recordTimer?.cancel()
-        listener.onRecordTimerTick(videoDuration / 1000)
-        recordTimer = object : CountDownTimer(videoDuration, 1000) {
+        listener?.onRecordTimerTick(duration!! / 1000)
+        recordTimer = object : CountDownTimer(duration!!, 1000) {
             override fun onFinish() {
                 // Do nothing
             }
 
             override fun onTick(millisUntilFinished: Long) {
-                listener.onRecordTimerTick(millisUntilFinished / 1000)
+                listener?.onRecordTimerTick(millisUntilFinished / 1000)
             }
         }
         recordTimer?.start()
@@ -83,7 +118,7 @@ class CameraHelper(private val cameraView: CameraView, private val fragment: Fra
 
     override fun onVideoRecordingEnd() {
         recordTimer?.cancel()
-        listener.onRecordingEnd()
+        listener?.onRecordingEnd()
     }
 }
 

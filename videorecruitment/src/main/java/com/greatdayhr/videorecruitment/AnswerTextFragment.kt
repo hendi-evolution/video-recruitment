@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.fragment_answer_text.*
 
@@ -32,7 +33,11 @@ class AnswerTextFragment : Fragment() {
         }
         btn_submit.setOnClickListener {
             val answer = et_answer.text.trim().toString()
-            parent().onTextAnswered(answer)
+            if (answer.isNullOrEmpty()) {
+                Toast.makeText(this.activity, "Answer can not be empty", Toast.LENGTH_SHORT).show()
+            } else {
+                parent().onTextAnswered(answer)
+            }
         }
     }
 
