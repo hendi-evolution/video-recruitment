@@ -39,6 +39,10 @@ class AnswerTextFragment : Fragment() {
                 parent().onTextAnswered(answer)
             }
         }
+
+        btn_close.setOnClickListener {
+            activity?.finish()
+        }
     }
 
     private fun setQuestionView() {
